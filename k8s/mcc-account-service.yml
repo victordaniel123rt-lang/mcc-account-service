@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcc-account-service
+  namespace: stech
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcc-account-service
+  template:
+    metadata:
+      labels:
+        app: mcc-account-service
+    spec:
+      containers:
+        - name: mcc-account-service
+          image: victor146/mcc-account:1.0
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: IfNotPresent
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcc-account-service
+  namespace: stech
+spec:
+  selector:
+    app: mcc-account-service
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
